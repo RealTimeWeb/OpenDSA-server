@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import os
 import sys
 for path in sys.path:
     if "tarkoski" in path:

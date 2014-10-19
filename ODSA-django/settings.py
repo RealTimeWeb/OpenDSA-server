@@ -1,6 +1,6 @@
 # Django settings for aaltoplus project.
 import os
-import conf
+# import conf
 
 # Lines for Celery.
 import djcelery
@@ -10,21 +10,23 @@ djcelery.setup_loader()
 def get_path(filename):
     return os.path.join(os.path.dirname(__file__), filename)
 
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
-#gist middleware variables
+
 XS_SHARING_ALLOWED_ORIGINS = ['http://algoviz-beta6.cc.vt.edu','http://algoviz.org','http://algoviz-beta7.cc.vt.edu']
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
-XS_SHARING_ALLOWED_HEADERS = ["Content-Type"] 
+XS_SHARING_ALLOWED_HEADERS = ["Content-Type"]
 
 APPEND_SLASH=True
 
-ACCOUNT_ACTIVATION_DAYS = 365 
+ACCOUNT_ACTIVATION_DAYS = 365
 
 #celery broker
 #BROKER_URL = 'amqp://guest:guest@localhost:5672/'
-BROKER_URL = "django://" 
- 
+BROKER_URL = "django://"
+
 # This URL is used when building absolute URLs to this service
 BASE_URL = ""
 
@@ -37,9 +39,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': conf.name,         #g3et_path('test.db'),            # Or path to database file if using sqlite3.
-        'USER': conf.user,                  # Not used with sqlite3. dbadmin
-        'PASSWORD': conf.password,                  # Not used with sqlite3. vis4_dsa
+        'NAME': os.environ.get('DB_NAME', ''),         #g3et_path('test.db'),            # Or path to database file if using sqlite3.
+        'USER': os.environ.get('DB_USER', ''),                  # Not used with sqlite3. dbadmin
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),                  # Not used with sqlite3. vis4_dsa
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -65,7 +67,7 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/var/www/media/'   #get_path("media/")
+MEDIA_ROOT = get_path("media/")   #get_path("media/")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -84,7 +86,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    "/home/efouh/OpenDSA-server/ODSA-django/assets/",
+    # "/home/efouh/OpenDSA-server/ODSA-django/assets/",
+    get_path("assets/"),
     #"/home/aalto/aaltoplus/assets"
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
@@ -105,7 +108,8 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = conf.secret_key 
+# TODO There is no conf file? Commenting this out for now
+# SECRET_KEY = conf.secret_key
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -169,10 +173,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.admin',
-    'django.contrib.humanize', 
+    'django.contrib.humanize',
     'exercise',
     'course',
-    #'south', # South disabled due to refactoring of the database 
+    #'south', # South disabled due to refactoring of the database
     'inheritance',
     'tastypie',
     'userprofile',
@@ -222,6 +226,6 @@ EMAIL_PORT = 587
 # Optional SMTP authentication information for EMAIL_HOST.
 DEFAULT_FROM_EMAIL = 'opendsa.cc.vt.edu <noreply@opendsa.cc.vt.edu>'
 EMAIL_HOST_USER = 'root'
-EMAIL_HOST_PASSWORD = '' 
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 

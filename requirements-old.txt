@@ -1,6 +1,6 @@
 = Aalto+ =
-Python 2.7
-Django 1.3
+=Python 2.7=
+=Django 1.3=
 Feedparser
 #django_celery
 

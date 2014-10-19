@@ -161,4 +161,6 @@ settings.py
 
 *.bk
 *.class
+media/
 secrets.txt
+.env
